@@ -80,6 +80,25 @@ def AND(x1,x2):
 只对某个数据集过度拟合的状态称为过拟合（over fitting）。
 
 ## 4.2 损失函数
+神经网络以某个指标为线索寻找最优权重参数，所用的指标称为"损失函数"（loss function）。损失函数可自行定义，一般使用均方误差和交叉熵误差。
+
+### 4.2.1 均方误差（mean squared error-MSE）
+E=1
+'''
+def mean_squared_error(y,t):
+	return 0.5 * np.sum((y-t) ** 2)
+'''
+
+### 4.2.2 交叉熵误差（cross entropy error-CEE）
+'''
+def cross_entropy_error(y,t):
+	delta = 1e-7
+	return -np.sum(t * np.log(y+delta))
+'''
+
+### 4.2.3 mini-batch学习
+
+
 
 # Ch8 深度学习
 深度学习是加深了层的深度神经网络。
