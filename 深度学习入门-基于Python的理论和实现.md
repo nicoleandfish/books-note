@@ -84,24 +84,38 @@ def AND(x1,x2):
 
 ### 4.2.1 均方误差（mean squared error-MSE）
 E=1
-'''
+```
 def mean_squared_error(y,t):
 	return 0.5 * np.sum((y-t) ** 2)
-'''
+```
 
 ### 4.2.2 交叉熵误差（cross entropy error-CEE）
-'''
+
+```
 def cross_entropy_error(y,t):
 	delta = 1e-7
 	return -np.sum(t * np.log(y+delta))
-'''
+```
 
 ### 4.2.3 mini-batch学习
 
-
+# ch6 与学习相关的技巧
+## 6.1参数的更新
+神经网络的学习的目的是找到损失函数的值尽可能小的参数。这个过程称为最优化（optimization）。
+为了找到最优参数，将参数的梯度（导数）作为依据，沿梯度方向更新参数，并重复此步骤，从而找到一定精度下的最优参数。这个过程为随机梯度下降法（stochastic gradient descent），简称SGD。
+###6.1.1 SGD
+···
+class SGD:
+	def __init__(self,lr=0.01):
+		self.lr=lr
+	def update(self, params, grads):
+		for key in params.keys():
+			params[key] -= self.lr * grads[key]
+···
 
 # Ch8 深度学习
 深度学习是加深了层的深度神经网络。
+
 
 ## 8.1 加深网络
 
