@@ -45,4 +45,89 @@
 - 提取单词或字符的n-gram，并将每个n-gram转换为一个向量。n-gram是多个连续单词或字符的集合（n-gram之间可重叠）。
 标记（token）：将文本分解而成的单元（单词、字符或n-gram）。
 分词（tokenization）：将文本分解成标记的过程。
+将向量与标记相关联的方法：one-hot编码（one-hot encoding）与标记嵌入（token embedding，适用于单词为词嵌入（word embedding））。
+一般从文本到标记再到向量。
 
+二元语法袋（bag-of-2-grams）及三元语法袋（bag-of-3-grams）举例：
+"the cat sat on the mat"
+bag-of-2-grams:
+{"the","the cat","cat","cat sat","sat","sat on","on","on the","the","the mat","mat"}
+bag-of-3-grams:
+{"the","the cat","cat","cat sat","the cat sat","sat","sat on","on","cat sat on","on the","the","sat on the","the mat","mat","on the mat"}
+词袋（bag-of-words）是不保存顺序的粉刺方法，用于千层的语言处理模型，而非深度学习模型。在使用轻量级的浅层文本处理模型时（比如logisitc回归喝随机森林），n-gram是一种较为性能较好的特征工程工具。
+
+### 6.1.1 单词和字符的one-hot编码
+one-hot编码是将标记转换为向量的最常用、最基本的方法。
+```
+#one-hot coding sample one
+import numpy as np
+samples = ['the cat sat on the mat.','the dog ate my homework.']
+token_index={} #create the index of token
+for sample in samples:
+  for word in sample.split(): #method split to tokenization, in real apply need reduce the symboland special marks.
+    if word not in token_index:
+      token_index[word] = len(token_index)+1 #for each word to create unique index, pay attention index start from 1 not 0.
+max_length=10 #only take 10 word for each sample
+
+results = np.zeros(shape=(len(samples),max_length,max(token_index.values())+1))
+
+for i,sample in enumerate(samples):
+  for j,word in list(eumerate(sample.split()))[:max_length]:
+    index = token_index.get(word)
+    results[i,j,index]=1.
+```
+
+```
+
+```
+
+# 在EC2 GPU实例上运行Jupyter notebook
+需要AWS账号。
+- 打开EC2控制面板（https://console.aws.amazon.com/ec2/v2），点击Launch Instance。
+- 选择AWS Marketplace，并搜索"deep learning"。找到Deep Learning AMI Ubuntu Version的Amazon系统映像（AMI）
+- 选择p2.xlarge实例，此实例允许访问单个GPU。
+- Configure Instance\Add Storage\Add Tags可以保留默认配置。Configure Security Group需要自定义配置，新增一个TCP规则来允许8888端口被本地计算机访问，为保证个人信息安全，设置本笔记本电脑IP进行访问。
+首次创建实例，需要创建新密钥并下载。
+- 连接实例需要在EC2控制面上选择，并Connect。
+- 通过SSH登陆到实例上，建议创建ssl目录，并打开。（mkdir ssl/cd ssl）
+- 使用OpenSSL创建一个新的SSL证书，并在当前ssl目录下创建cert.key和cert.pem文件。
+openssl req -x509 -nodes -days 365 -newkey rsa:1024 -keyout "cert.key" -out "cert.pem" -batch.
+
+配置Jupyter
+需要修改远程实例上的默认配置。
+- 生成新的Jupyter配置文件。
+jupyter notebook --generate-config
+- （可选）为笔记本生成Jupyter密码。打开IPython shell，运行以下代码。
+from IPython.lib import passwd
+passwd()
+exit
+- passwd()命令会要求输入密码并确认。完成后，会显示密码的散列值。
+- 使用vi或任何文本编辑器编辑Jupyter配置文件。
+vi /.jupyter/jupyter_notebook_config.py
+- 将下列代码增加到文本开头。
+c = get_config()
+c.NotebookApp.certfile = u'/home/ubuntu/ssl/cert.pem'
+c.NotebookApp.keyfile = u'/home/ubuntu/ssl/cert.key'
+c.IPKernelApp.pylab = 'inline'
+c.NotebookApp.ip = '*'
+
+c.NotebookApp.open_browser=False
+c.NotebookApp.password = '之前生成的密码散列值'
+
+安装Keras
+默认自带，需升级keras版本
+sudo pip install keras --upgrade
+如果是python3，则需要pip3
+
+设置本地端口转发
+在本地计算机的shell中，将本地的443端口（HTTPS端口）转发到远程实例的8888端口。
+sudo ssh -i awsKeys.pem -L local_port:local_machine:remote_port remote_machine
+sudo ssh -i awsKeys.pen -L 443:127.0.0.1:8888 ubuntu@ec2-54-147-126-214.compute-1.amazonaws.com
+远程机器在ssh的connect时会出现。
+
+在远程实例上将本书相关的Jupyter的Github仓库克隆下来：
+git clone https://github.com/fchollet/deep-learning-with-python-notebooks.git
+cd deep-learning-with-python-notebooks
+在远程实例上启动Jupyter
+jupyter notebook
+在本地浏览器https://127.0.0.1
