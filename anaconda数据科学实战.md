@@ -354,3 +354,14 @@ animation option 'nmax' changed: 50 --> 30
 ```
 # 5 在anaconda中统计建模
 最简单的统计模型：单因子线性模型（the one-factor linear model)，此模型的应用：著名的金融模型资本资产定价模型（cital asset pricing model,CAPM)
+
+# 7 Anaconda优化
+```
+> install.packages("scatterplot3d")
+> library(scatterplot3d)
+> x<-seq(-2,2,0.05)
+> y<-seq(-2,2,0.05)
+> z<-(x^2-1)^2+(x^2*y-x-1)^2
+> name<-"3 dimensional graph"
+> scatterplot3d(x,y,z,highlight.3d=TRUE,col.axis="blue",col.grid="lightblue",main=name,pch=2)
+```
