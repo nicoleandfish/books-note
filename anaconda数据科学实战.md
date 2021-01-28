@@ -339,6 +339,100 @@ Error in polygon(c(-4, x, -2.33), c(0, y, 0), col = "red") :
 
 
 > install.packages("rattle")
+ #多结点相互连接的图像库，未安装成功，R目前使用的镜像链接无此包
+> install.packages("qgraph")
+```
+
+## 4.3 Python可视化
+```
+>>> import matplotlib.pyplot as plt
+>>> plt.plot([2,3,8,12])
+[<matplotlib.lines.Line2D object at 0x10cbc85f8>]
+>>> plt.show()
+
+>>> import scipy as sp
+>>> import matplotlib.pyplot as plt
+>>> x=sp.linspace(-2*sp.pi,2*sp.pi,200,endpoint=True)
+>>> y=sp.cos(x)
+>>> plt.plot(x,y)
+[<matplotlib.lines.Line2D object at 0x1156c4f28>]
+>>> plt.xlabel("x-value")
+Text(0.5, 0, 'x-value')
+>>> plt.ylabel("Cosine function")
+Text(0, 0.5, 'Cosine function')
+>>> plt.title("Cosine curve from -2pi to 2pi")
+Text(0.5, 1.0, 'Cosine curve from -2pi to 2pi')
+>>> plt.show()
+
+#货币时间价值
+>>> import matplotlib.pyplot as plt
+>>> fig=plt.figure(facecolor='white')
+>>> dd=plt.axes(frameon=False)
+>>> dd.set_frame_on(False)
+>>> dd.get_xaxis().tick_bottom()
+>>> dd.axes.get_yaxis().set_visible(False)
+>>> x=range(0,11,2)
+>>> x1=range(len(x),0,-1)
+>>> y=[0]*len(x)
+>>> plt.annotate("$100 received today",xy=(0,0),xytext=(2,0.15),arrowprops=dict(facecolor='black',shrink=2))
+Text(2, 0.15, '$100 received today')
+>>> plt.annotate("$100 received in 2 years",xy=(2,0),xytext=(3.5,0.10),arrowprops=dict(facecolor='black',shrink=2))
+Text(3.5, 0.1, '$100 received in 2 years')
+>>> s=[50*2.5**n for n in x1]
+>>> plt.title("Time value of money")
+Text(0.5, 1.0, 'Time value of money')
+>>> plt.xlabel("Time (number of years)")
+Text(0.5, 0, 'Time (number of years)')
+>>> plt.scatter(x,y,s=s)
+<matplotlib.collections.PathCollection object at 0x114808860>
+>>> plt.show()
+```
+
+## 4.4 Julia数据可视化
+
+## 4.5 绘制简单图形
+R
+```
+> x<-seq(-3,3,by=0.05)
+> y<-2+2.5*x
+> plot(x,y,type='b')
+```
+R函数plot()类型的可能值
+值|描述
+---|---
+p|点
+l|直线
+b|表示两者
+c|表示直线部分，单独的b
+o|表示二者都过度绘制
+h|用户柱状（或高密度）垂直线
+s|表示阶梯步幅
+S|表示其他步幅
+n|表示不绘制
+
+Python
+```
+>>> import numpy as np
+>>> import matplotlib.pyplot as plt
+>>> n=np.linspace(0,10,10)
+>>> pv=100
+>>> R=0.1
+>>> fv=pv*(1+R)**n
+>>> plt.plot(n,fv)
+[<matplotlib.lines.Line2D object at 0x11485f898>]
+>>> plt.show()
+```
+
+### 4.5.1 饼图和直方图
+R
+```
+> results <- c(10,8,4,6)
+> names<-c("1st","2nd","3rd","4th","5th")
+> pct<-round(results/sum(results)*100)
+> pct2<-rev(sort(pct))
+> name<-"Pie Chart of results"
+> colors<-seq(0.4,1.0,length=length(results))
+> pie(results,labels=names,col=gray(colors),main=name)
 ```
 
 ## 4.9 动态可视化Dynamic visualization
@@ -352,6 +446,7 @@ animation option 'nmax' changed: 50 --> 30
 > par(mar=a,mgp=b,tcl=-0.3,cex.axis=0.8,cex.lab=0.8,cex.main=1)
 > brownian.motion(pch=21,cex=5,col="red",bg="yellow",main=name)
 ```
+
 # 5 在anaconda中统计建模
 最简单的统计模型：单因子线性模型（the one-factor linear model)，此模型的应用：著名的金融模型资本资产定价模型（cital asset pricing model,CAPM)
 
@@ -364,4 +459,11 @@ animation option 'nmax' changed: 50 --> 30
 > z<-(x^2-1)^2+(x^2*y-x-1)^2
 > name<-"3 dimensional graph"
 > scatterplot3d(x,y,z,highlight.3d=TRUE,col.axis="blue",col.grid="lightblue",main=name,pch=2)
+```
+角点解是最大化或最小化
+
+# 8无监督学习
+聚类或分组的逻辑，同组成员之间的距离小于组间成员的距离。
+```
+
 ```
